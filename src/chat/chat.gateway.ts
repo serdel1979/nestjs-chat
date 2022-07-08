@@ -5,7 +5,9 @@ import {
     OnGatewayConnection,
     OnGatewayDisconnect,
   } from '@nestjs/websockets';
-  @WebSocketGateway()
+  @WebSocketGateway({
+    cors: { origin: '*' },
+  })
   export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer() server;
     users: number = 0;
@@ -24,6 +26,7 @@ import {
     @SubscribeMessage('chat')
     async onChat(client, message) {
       client.broadcast.emit('chat', message);
+      console.log(message);
     }
   }
   
